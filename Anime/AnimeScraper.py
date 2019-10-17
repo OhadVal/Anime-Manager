@@ -3,13 +3,11 @@ from Anime.UtilFunctions import *
 import os
 import wget
 
-# safely_get_folder_path(os.path.dirname(os.path.dirname(__file__)) + '/Animes/')
-
 
 class AnimeScraper:
     def __init__(self):
         self.url = "http://www.anime1.com/watch/"
-        self.folder_path = '/home/ohad/Desktop/Anime/'
+        self.folder_path = safely_get_folder_path(os.path.dirname(os.path.dirname(__file__)) + '/Animes/')
 
     def get_episode(self, anime, episode):
         episode_video_link = self.__get_episode_video_link(anime, episode)
