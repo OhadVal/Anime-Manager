@@ -163,6 +163,8 @@ class DownloadPage(tk.Frame):
 
         # Dropdown List
         animes = anime_manager.animeNames()
+        if not animes:
+            animes = ["Nothing here yet"]
         self.choice = animes[0]
         variable = tk.StringVar(self)
         variable.set(animes[0])
