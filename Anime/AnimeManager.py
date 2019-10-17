@@ -34,9 +34,22 @@ class AnimeManager:
         self.db.update()
 
     def download_episode(self, anime, episode):
-        self.scraper.get_episode(anime, episode)  # Download
-        self.db.data[anime.title].last_episode_downloaded = episode  # Update data
-        self.db.update()  # Update DB
+        if self.validate_episode(anime, episode):
+            self.scraper.get_episode(anime, episode)  # Download
+            self.db.data[anime.title].last_episode_downloaded = episode  # Update data
+            self.db.data[anime.title].last_episode_watched = episode  # Update data
+            self.db.update()  # Update DB
+            return anime.title + "'s episode " + str(episode) + " downloaded successfully"
+        return "Please enter a valid episode"
+
+    def download_multiple_episodes(self, anime, start, end):
+        if self.validate_episode(anime, start) and self.validate_episode(anime, end):
+            self.scraper.get_multiple_episodes(anime, start, end)  # Download
+            self.db.data[anime.title].last_episode_downloaded = end  # Update data
+            self.db.data[anime.title].last_episode_watched = end  # Update data
+            self.db.update()  # Update DB
+            return anime.title + "'s episodes " + str(start) + "to " + str(end) + " downloaded successfully"
+        return "Please enter a valid episode"
 
     def add(self, anime_dict):
         answer = self.db.add(anime_dict)
@@ -48,3 +61,8 @@ class AnimeManager:
     def animeNames(self):
         return [name['title'] for name in self.db.data_to_list()]
 
+    def validate_episode(self, anime, episode):
+        self.__update_last_episodes()
+        if episode < 1 or episode > anime.last_episode_aired:
+            return False
+        return True

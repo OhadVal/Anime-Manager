@@ -4,13 +4,14 @@ import json
 from Anime import UtilFunctions
 import os
 
+
 class AnimeDB:
     def __init__(self):
         self.file_path = UtilFunctions.safely_get_folder_path(os.path.dirname(os.path.dirname(__file__))) + '/data.json'
         self.file_data = {}
         self.data = {}
         self.startup_check()
-        
+
     # make sure there's a file to work with
     def startup_check(self):
         if not (os.path.isfile(self.file_path) and os.access(self.file_path, os.R_OK)):
@@ -33,7 +34,6 @@ class AnimeDB:
         for anime in self.data:
             lst.append(dict(self.data[anime]))
         return lst
-
 
     def update(self):
         data = self.data_to_list()
@@ -64,3 +64,7 @@ class AnimeDB:
             del self.data[anime_to_delete.title]
             self.update()
             return 'Show deleted successfully'
+
+    def find(self, anime_name):
+        if anime_name in self.data:
+            return self.data[anime_name]
