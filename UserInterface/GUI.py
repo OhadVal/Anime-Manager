@@ -24,8 +24,6 @@ class MyApp(tk.Tk):
             new_frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame(StartPage)
 
-
-
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
@@ -41,13 +39,15 @@ def display_main_menu(my_frame, controller):
     update_button = tk.Button(my_frame, text="Update",
                               command=lambda: controller.show_frame(UpdatePage), font=UserInterface.Style.SMALL_FONT)
     download_button = tk.Button(my_frame, text="Download",
-                                command=lambda: controller.show_frame(DownloadPage), font=UserInterface.Style.SMALL_FONT)
+                                command=lambda: controller.show_frame(DownloadPage),
+                                font=UserInterface.Style.SMALL_FONT)
 
     home_button.place(relx=0.18)
     add_button.place(relx=0.303)
     remove_button.place(relx=0.401)
     update_button.place(relx=0.553)
     download_button.place(relx=0.691)
+
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -108,6 +108,7 @@ class AddPage(tk.Frame):
         answer = anime_manager.add({"title": title, "last_episode_watched": last_episode_watched})
         messagebox.showinfo("Message", answer)
 
+
 class RemovePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -131,7 +132,8 @@ class UpdatePage(tk.Frame):
 
         # Labels
         last_episode_watched_label = tk.Label(self, text="Last Episode Watched:", font=UserInterface.Style.MEDIUM_FONT)
-        last_episode_downloaded_label = tk.Label(self, text="Last Episode Downloaded:", font=UserInterface.Style.MEDIUM_FONT)
+        last_episode_downloaded_label = tk.Label(self, text="Last Episode Downloaded:",
+                                                 font=UserInterface.Style.MEDIUM_FONT)
         anime_to_update_label = tk.Label(self, text="Anime:", font=UserInterface.Style.MEDIUM_FONT)
 
         # Inputs
@@ -160,17 +162,20 @@ class DownloadPage(tk.Frame):
         display_main_menu(self, controller)
 
         # Dropdown List
+        animes = anime_manager.animeNames()
+        self.choice = animes[0]
         variable = tk.StringVar(self)
-        variable.set("Default")
-        anime_dropdown = tk.OptionMenu(self, variable, "one", "two", "three")
+        variable.set(animes[0])
+        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
 
         # Buttons
-        download_button = tk.Button(self, text="Download", bg=UserInterface.Style.BUTTON_COLOR)
+        download_button = tk.Button(self, text="Download", bg=UserInterface.Style.BUTTON_COLOR,
+                                    command=self.download_button_clicked)
 
         # Inputs
-        specific_episode_input = tk.Entry(self, width=50, font=UserInterface.Style.SMALL_FONT)
-        from_episode_input = tk.Entry(self, width=20, font=UserInterface.Style.SMALL_FONT)
-        to_episode_input = tk.Entry(self, width=20, font=UserInterface.Style.SMALL_FONT)
+        self.specific_episode_input = tk.Entry(self, width=50, font=UserInterface.Style.SMALL_FONT)
+        self.from_episode_input = tk.Entry(self, width=20, font=UserInterface.Style.SMALL_FONT)
+        self.to_episode_input = tk.Entry(self, width=20, font=UserInterface.Style.SMALL_FONT)
 
         # Labels
         title_label = tk.Label(self, text="Anime:", font=UserInterface.Style.MEDIUM_FONT)
@@ -182,15 +187,47 @@ class DownloadPage(tk.Frame):
         anime_dropdown.place(relx=0.15, rely=0.35, relwidth=0.2, relheight=0.09)
         title_label.place(rely=0.35)
         specific_episode_label.place(rely=0.55)
-        specific_episode_input.place(relx=0.53, rely=0.55, relwidth=0.1)
+        self.specific_episode_input.place(relx=0.53, rely=0.55, relwidth=0.1)
         from_episode_label.place(rely=0.7)
-        from_episode_input.place(relx=0.35, rely=0.7, relwidth=0.1)
+        self.from_episode_input.place(relx=0.35, rely=0.7, relwidth=0.1)
         to_episode_label.place(relx=0.5, rely=0.7)
-        to_episode_input.place(relx=0.58, rely=0.7, relwidth=0.1)
+        self.to_episode_input.place(relx=0.58, rely=0.7, relwidth=0.1)
 
         download_button.place(rely=0.88, relwidth=1, relheight=0.12)
 
+    def get_choice(self, value):
+        self.choice = value
 
+    def download_button_clicked(self):
+        single_episode = self.specific_episode_input.get()
+        from_episode = self.from_episode_input.get()
+        to_episode = self.to_episode_input.get()
 
+        if single_episode == "" and (from_episode == "" or to_episode == ""):
+            messagebox.showinfo("Error!", "Please enter the episode/episodes you wish to download!")
 
+        else:
+            anime = anime_manager.db.find(self.choice)
 
+            # Download single episode
+            if single_episode != "":
+                single_episode = int(single_episode)
+                response = anime_manager.download_episode(anime, single_episode)
+
+            # Download multiple episodes
+            else:
+                from_episode = int(from_episode)
+                to_episode = int(to_episode)
+                response = anime_manager.download_multiple_episodes(anime, from_episode, to_episode)
+
+        messagebox.showinfo("Error!", response)
+
+        # Reset to default
+        self.specific_episode_input.delete(0, tk.END)
+        self.from_episode_input.delete(0, tk.END)
+        self.to_episode_input.delete(0, tk.END)
+
+    def validate_episode(self, anime, episode):
+        if 0 < episode <= anime.last_episode_aired:
+            return True
+        return False

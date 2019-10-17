@@ -15,7 +15,7 @@ class AnimeScraper:
         wget.download(episode_video_link, out=file_path)
 
     def get_multiple_episodes(self, anime, start, end):
-        if (start > 1) and (anime.last_episode_aired <= end):
+        if (start > 1) and (anime.last_episode_aired >= end):
             for i in range(start, end + 1):
                 self.get_episode(anime, i)
 
