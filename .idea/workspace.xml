@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bdbe3b0-9eaa-425c-853f-14eba0f6a152" name="Default Changelist" comment="Added Download Page Functionality">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/Anime.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/Anime.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/AnimeDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/AnimeDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/AnimeManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/AnimeManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/AnimeScraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/AnimeScraper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.py" beforeDir="false" afterPath="$PROJECT_DIR$/Program.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserInterface/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserInterface/GUI.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +27,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1QmBdQNFXnebNo8T34dT8c8lKou" />
@@ -223,6 +233,10 @@
           <url>file://$PROJECT_DIR$/Anime/AnimeManager.py</url>
           <line>16</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Anime/AnimeDB.py</url>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

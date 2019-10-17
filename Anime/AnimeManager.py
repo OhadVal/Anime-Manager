@@ -66,4 +66,3 @@ class AnimeManager:
         if episode < 1 or episode > anime.last_episode_aired:
             return False
         return True
-

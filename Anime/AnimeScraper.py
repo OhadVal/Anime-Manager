@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from Anime.UtilFunctions import *
-import os
 import wget
 
 
