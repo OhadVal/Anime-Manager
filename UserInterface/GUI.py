@@ -18,7 +18,7 @@ class MyApp(tk.Tk):
 
         self.frames = {}
 
-        for frame in (StartPage, AddPage, DownloadPage, UpdatePage):
+        for frame in (StartPage, AddPage, RemovePage, DownloadPage, UpdatePage):
             new_frame = frame(container, self)
             self.frames[frame] = new_frame
             new_frame.grid(row=0, column=0, sticky="nsew")
@@ -35,7 +35,7 @@ def display_main_menu(my_frame, controller):
     add_button = tk.Button(my_frame, text="Add",
                            command=lambda: controller.show_frame(AddPage), font=UserInterface.Style.SMALL_FONT)
     remove_button = tk.Button(my_frame, text="Remove",
-                              command=lambda: controller.show_frame(StartPage), font=UserInterface.Style.SMALL_FONT)
+                              command=lambda: controller.show_frame(RemovePage), font=UserInterface.Style.SMALL_FONT)
     update_button = tk.Button(my_frame, text="Update",
                               command=lambda: controller.show_frame(UpdatePage), font=UserInterface.Style.SMALL_FONT)
     download_button = tk.Button(my_frame, text="Download",
@@ -112,11 +112,55 @@ class AddPage(tk.Frame):
 class RemovePage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Home", font=UserInterface.Style.LARGE_FONT)
-        label.pack(pady=10, padx=10)
+        label = tk.Label(self, text="Remove Anime", font=UserInterface.Style.LARGE_FONT)
+        label.place(relx=0.35, rely=0.1)
 
         display_main_menu(self, controller)
 
+
+        # Dropdown List
+        animes = anime_manager.animeNames()
+        if not animes:
+            animes = ["Nothing here yet"]
+        self.choice = animes[0]
+        variable = tk.StringVar(self)
+        variable.set(animes[0])
+        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
+
+        # Buttons
+        remove_button = tk.Button(self, text="Remove", bg=UserInterface.Style.BUTTON_COLOR,
+                                    command=self.remove_button_clicked)
+
+        # Labels
+        title_label = tk.Label(self, text="Select Anime To Remove:", font=UserInterface.Style.MEDIUM_FONT)
+
+        # Place
+        title_label.place(relx=0.18, rely=0.35)
+        anime_dropdown.place(relx=0.18, rely=0.45, relwidth=0.7, relheight=0.15)
+        remove_button.place(rely=0.88, relwidth=1, relheight=0.12)
+
+    def remove_button_clicked(self):
+        delete_confirm = messagebox.askyesno("Remove", "Would you like to remove " + self.choice + "?")
+        if delete_confirm:
+            answer = anime_manager.delete(self.choice)
+            self.refresh_anime_list()
+        else:
+            answer = "That was a close one"
+        messagebox.showinfo("Message", answer)
+
+
+    def refresh_anime_list(self):
+        animes = anime_manager.animeNames()
+        if not animes:
+            animes = ["Nothing here yet"]
+        self.choice = animes[0]
+        variable = tk.StringVar(self)
+        variable.set(animes[0])
+        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
+        anime_dropdown.place(relx=0.18, rely=0.45, relwidth=0.7, relheight=0.15)
+
+    def get_choice(self, value):
+        self.choice = value
 
 class UpdatePage(tk.Frame):
     def __init__(self, parent, controller):

@@ -58,10 +58,10 @@ class AnimeDB:
                 return 'Anime successfully added!'
 
     def delete(self, anime_to_delete):
-        if anime_to_delete.title not in self.data:
+        if anime_to_delete not in self.data:
             return "Show Doesn't Exist!"
         else:
-            del self.data[anime_to_delete.title]
+            del self.data[anime_to_delete]
             self.update()
             return 'Show deleted successfully'
 
