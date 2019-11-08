@@ -66,3 +66,8 @@ class AnimeManager:
         if episode < 1 or episode > anime.last_episode_aired:
             return False
         return True
+
+    def update(self, anime, episode):
+        if self.db.update_episode(anime, episode):
+            return "Anime Updated Successfully!"
+        return "Couldn't Update Anime"

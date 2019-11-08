@@ -3,6 +3,7 @@ import UserInterface.Style
 import Anime.AnimeManager as AnimeManager
 from tkinter import messagebox
 from tkinter import font
+from UserInterface.UtilGUI import *
 
 anime_manager = AnimeManager.AnimeManager()
 
@@ -117,15 +118,8 @@ class RemovePage(tk.Frame):
 
         display_main_menu(self, controller)
 
-
         # Dropdown List
-        animes = anime_manager.animeNames()
-        if not animes:
-            animes = ["Nothing here yet"]
-        self.choice = animes[0]
-        variable = tk.StringVar(self)
-        variable.set(animes[0])
-        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
+        anime_dropdown = get_anime_list(self, anime_manager)
 
         # Buttons
         remove_button = tk.Button(self, text="Remove", bg=UserInterface.Style.BUTTON_COLOR,
@@ -143,24 +137,15 @@ class RemovePage(tk.Frame):
         delete_confirm = messagebox.askyesno("Remove", "Would you like to remove " + self.choice + "?")
         if delete_confirm:
             answer = anime_manager.delete(self.choice)
-            self.refresh_anime_list()
+            anime_dropdown = get_anime_list(self, anime_manager)
+            anime_dropdown.place(relx=0.18, rely=0.45, relwidth=0.7, relheight=0.15)
         else:
             answer = "That was a close one"
         messagebox.showinfo("Message", answer)
 
-
-    def refresh_anime_list(self):
-        animes = anime_manager.animeNames()
-        if not animes:
-            animes = ["Nothing here yet"]
-        self.choice = animes[0]
-        variable = tk.StringVar(self)
-        variable.set(animes[0])
-        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
-        anime_dropdown.place(relx=0.18, rely=0.45, relwidth=0.7, relheight=0.15)
-
     def get_choice(self, value):
         self.choice = value
+
 
 
 class UpdatePage(tk.Frame):
@@ -171,31 +156,34 @@ class UpdatePage(tk.Frame):
         display_main_menu(self, controller)
 
         # Dropdown List
-        variable = tk.StringVar(self)
-        variable.set("Default")
-        anime_dropdown = tk.OptionMenu(self, variable, "one", "two", "three")
+        anime_dropdown = get_anime_list(self, anime_manager)
 
         # Labels
         last_episode_watched_label = tk.Label(self, text="Last Episode Watched:", font=UserInterface.Style.MEDIUM_FONT)
-        last_episode_downloaded_label = tk.Label(self, text="Last Episode Downloaded:",
-                                                 font=UserInterface.Style.MEDIUM_FONT)
         anime_to_update_label = tk.Label(self, text="Anime:", font=UserInterface.Style.MEDIUM_FONT)
 
         # Inputs
-        last_episode_watched_input = tk.Entry(self, width=50, font=UserInterface.Style.SMALL_FONT)
-        last_episode_downloaded_input = tk.Entry(self, width=50, font=UserInterface.Style.SMALL_FONT)
+        self.last_episode_watched_input = tk.Entry(self, width=50, font=UserInterface.Style.SMALL_FONT)
 
         # Buttons
-        update_button = tk.Button(self, text="Update", bg=UserInterface.Style.BUTTON_COLOR)
+        update_button = tk.Button(self, text="Update", bg=UserInterface.Style.BUTTON_COLOR,
+                                  command=self.update_button_clicked)
 
         # Place
         anime_to_update_label.place(rely=0.25)
         anime_dropdown.place(rely=0.25, relx=0.15, relwidth=0.2, relheight=0.09)
         last_episode_watched_label.place(rely=0.4)
-        last_episode_watched_input.place(rely=0.5, relwidth=0.8, relheight=0.1)
-        last_episode_downloaded_label.place(rely=0.6)
-        last_episode_downloaded_input.place(rely=0.7, relwidth=0.8, relheight=0.1)
+        self.last_episode_watched_input.place(rely=0.5, relwidth=0.8, relheight=0.1)
         update_button.place(rely=0.88, relwidth=1, relheight=0.12)
+
+    def get_choice(self, value):
+        self.choice = value
+
+    def update_button_clicked(self):
+        last_episode_watched = self.last_episode_watched_input.get()
+        response = anime_manager.update(self.choice, last_episode_watched)
+        messagebox.showinfo("Message", response)
+
 
 
 class DownloadPage(tk.Frame):
@@ -207,13 +195,7 @@ class DownloadPage(tk.Frame):
         display_main_menu(self, controller)
 
         # Dropdown List
-        animes = anime_manager.animeNames()
-        if not animes:
-            animes = ["Nothing here yet"]
-        self.choice = animes[0]
-        variable = tk.StringVar(self)
-        variable.set(animes[0])
-        anime_dropdown = tk.OptionMenu(self, variable, *animes, command=self.get_choice)
+        anime_dropdown = get_anime_list(self, anime_manager)
 
         # Buttons
         download_button = tk.Button(self, text="Download", bg=UserInterface.Style.BUTTON_COLOR,
@@ -242,8 +224,6 @@ class DownloadPage(tk.Frame):
 
         download_button.place(rely=0.88, relwidth=1, relheight=0.12)
 
-    def get_choice(self, value):
-        self.choice = value
 
     def download_button_clicked(self):
         single_episode = self.specific_episode_input.get()
@@ -278,3 +258,6 @@ class DownloadPage(tk.Frame):
         if 0 < episode <= anime.last_episode_aired:
             return True
         return False
+
+    def get_choice(self, value):
+        self.choice = value

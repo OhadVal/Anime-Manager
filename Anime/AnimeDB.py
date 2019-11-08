@@ -42,8 +42,10 @@ class AnimeDB:
             json_file = open(self.file_path, "w+")
             json_file.write(json.dumps(self.file_data))
             json_file.close()
+            return True
+
         except IOError:
-            print("Action failed!")
+            return False
 
     def add(self, anime_dict):
         if anime_dict['title'] in self.data:
@@ -68,3 +70,10 @@ class AnimeDB:
     def find(self, anime_name):
         if anime_name in self.data:
             return self.data[anime_name]
+
+    def update_episode(self, anime, episode):
+        self.data[anime].last_episode_downloaded = episode
+        self.data[anime].last_episode_watched = episode
+        if self.update():
+            return True
+        return False
