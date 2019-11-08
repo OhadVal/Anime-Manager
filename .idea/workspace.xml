@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bdbe3b0-9eaa-425c-853f-14eba0f6a152" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/UserInterface/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserInterface/GUI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserInterface/UtilGUI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/AnimeManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/AnimeManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anime/AnimeScraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/Anime/AnimeScraper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -207,7 +211,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571309113198</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added Remove Page">
+      <created>1572189907172</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1572189907172</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,7 +236,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added Download Page Functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Download Page Functionality" />
+    <MESSAGE value="Added Remove Page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Remove Page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

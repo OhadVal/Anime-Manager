@@ -48,7 +48,7 @@ class AnimeManager:
             self.db.data[anime.title].last_episode_downloaded = end  # Update data
             self.db.data[anime.title].last_episode_watched = end  # Update data
             self.db.update()  # Update DB
-            return anime.title + "'s episodes " + str(start) + "to " + str(end) + " downloaded successfully"
+            return anime.title + "'s episodes " + str(start) + " to " + str(end) + " downloaded successfully"
         return "Please enter a valid episode"
 
     def add(self, anime_dict):
